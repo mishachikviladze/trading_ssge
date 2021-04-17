@@ -1,0 +1,6 @@
+/venv
+myhome/__pycache__/*
+*.db
+myhome/spiders/__pycache__/*
+/data
+*.pyc
