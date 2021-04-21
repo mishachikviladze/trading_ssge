@@ -38,5 +38,28 @@ class DailytraidingappsSpider(scrapy.Spider):
 
 
     def parse_application(self, response):
-        pass
-        # print('მიღებული მისამართია'+'=====================================================================================>'+response.url)
+        # yield {'მისამართი': response.url}
+        print('მიღებული მისამართია'+'=====================================================================================>'+response.url)
+        yield {
+        'მდგომარეობა': response.xpath("normalize-space(//div[@class='condition']/text())").get(),
+        'მდებარეობა': response.xpath("normalize-space(//div[@class='location-time']/div[2]/p/span/text())").get(),
+        'ბოლო განახლების თარიღი': response.xpath("normalize-space(//div[@class='location-time']/div[2]/descendant::span[2]/text())").get(),
+        'პროდუქტის დასახელება': response.xpath("normalize-space(//h2[@class='main-title']/text())").get(),
+        'ფასი': response.xpath("normalize-space(//div[@class='market-item-price ']/text())").get(),
+        'ვალუტის სიმბოლო': response.xpath("normalize-space(//div[@class='market-item-price ']/span/text())").get(),
+        'განმცხადებელი': response.xpath("normalize-space(//div[@class='author_type']/text())").get(),
+        'მიმდინარე განცხადების ლინკი': response.url,
+        'ყველა განცხადების ლინკი': "https://www.ss.ge"+response.xpath("normalize-space(//div[@class='author_type']/descendant::span/a/@href)").get(),
+        'აგენტი თუ კერძო პირი': response.xpath("normalize-space((//div[@class='author_type'])[1]/span/a/text())").get(),
+        'სულ განცხადებათა რაოდენობა': response.xpath("normalize-space(//div[@class='author_type']/descendant::span[2]/text())").get(),
+        'პროდუქტის აღწერილობა': response.xpath("normalize-space(//span[@class='details_text']/text())").get(),
+        'პროდუქტის სპეციფიკაცია': response.xpath("normalize-space(//div[@class='jobs_details']/span/text())").get(),
+        'პროდუქტის მდგომარეობის აღწერილობა': response.xpath("normalize-space(//div[@class='jobs_details'][2]/span[2]/text())").get(),
+        'დათვალიერებათა რაოდენობა': response.xpath("normalize-space(//div[@class='article_views']/span/text())").get(),
+        'განცხადების ნომერი': response.xpath("normalize-space(//div[@class='market-item-id']/span/text())").get(),
+        'ტელეფონი': response.xpath("normalize-space(//div[@class='numbers-wrap']/a/@href)").get(),
+        }
+
+        # 'text': response.xpath("").get()
+
+
