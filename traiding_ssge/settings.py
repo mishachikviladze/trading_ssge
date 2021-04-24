@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = 'traiding_ssge.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'traiding_ssge (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.35'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -68,7 +68,7 @@ ROBOTSTXT_OBEY = True
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = True
 # The initial download delay
 #AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
@@ -89,3 +89,6 @@ ROBOTSTXT_OBEY = True
 
 
 FEED_EXPORT_ENCODING = 'utf-8'
+# FEED_EXPORT_FIELDS = []
+
+
