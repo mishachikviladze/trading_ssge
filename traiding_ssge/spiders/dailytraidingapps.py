@@ -1,5 +1,7 @@
 import scrapy
 from datetime import datetime, timedelta
+from itemloaders import ItemLoader
+from ..items import TraidingSsgeItem
 
 
 class DailytraidingappsSpider(scrapy.Spider):
@@ -38,28 +40,26 @@ class DailytraidingappsSpider(scrapy.Spider):
 
 
     def parse_application(self, response):
-        # yield {'მისამართი': response.url}
-        print('მიღებული მისამართია'+'=====================================================================================>'+response.url)
-        yield {
-        'new_or_used': response.xpath("normalize-space(//div[@class='condition']/text())").get(),
-        'location': response.xpath("normalize-space(//div[@class='location-time']/div[2]/p/span/text())").get(),
-        'last_updated': response.xpath("normalize-space(//div[@class='location-time']/div[2]/descendant::span[2]/text())").get(),
-        'product': response.xpath("normalize-space(//h2[@class='main-title']/text())").get(),
-        'price': response.xpath("normalize-space(//div[@class='market-item-price ']/text())").get(),
-        'currency symbol': response.xpath("normalize-space(//div[@class='market-item-price ']/span/text())").get(),
-        'applicant': response.xpath("normalize-space(//div[@class='author_type']/text())").get(),
-        'current_app_url': response.url,
-        'all_apps_url': "https://www.ss.ge"+response.xpath("normalize-space(//div[@class='author_type']/descendant::span/a/@href)").get(),
-        'agent_or_person': response.xpath("normalize-space((//div[@class='author_type'])[1]/span/a/text())").get(),
-        'number_of_apps': response.xpath("normalize-space(//div[@class='author_type']/descendant::span[2]/text())").get(),
-        'product_description': response.xpath("normalize-space(//span[@class='details_text']/text())").get(),
-        'product_specification': response.xpath("normalize-space(//div[@class='jobs_details']/span/text())").get(),
-        'product_condition_description': response.xpath("normalize-space(//div[@class='jobs_details'][2]/span[2]/text())").get(),
-        'seen': response.xpath("normalize-space(//div[@class='article_views']/span/text())").get(),
-        'app_id': response.xpath("normalize-space(//div[@class='market-item-id']/span/text())").get(),
-        'phone': response.xpath("normalize-space(//div[@class='numbers-wrap']/a/@href)").get(),
-        }
-
-        # 'text': response.xpath("").get()
+        loader = ItemLoader(item = TraidingSsgeItem(), selector=response)
+        loader._add_value('statement_date', response.request.meta['appdate'])
+        loader.add_xpath('new_or_used', "normalize-space(//div[@class='condition']/text())")
+        loader.add_xpath('location', "//div[@class='location-time']/div[2]/p/span/text()")
+        loader.add_xpath('last_updated', 'normalize-space(//div[@class="location-time"]/div[2]/descendant::span[2]/text())')
+        loader.add_xpath('product', "normalize-space(//h2[@class='main-title']/text())")
+        loader.add_xpath('price', "normalize-space(//div[@class='market-item-price ']/text())")
+        loader.add_xpath('currency_symbol', "normalize-space(//div[@class='market-item-price ']/span/text())")
+        loader.add_xpath('applicant', "normalize-space(//div[@class='author_type']/text())")
+        loader.add_value('current_app_url', response.url)
+        loader.add_xpath('all_apps_url', "//div[@class='author_type']/descendant::span/a/@href")
+        loader.add_xpath('agent_or_person', "normalize-space((//div[@class='author_type'])[1]/span/a/text())")
+        loader.add_xpath('number_of_apps', "normalize-space(//div[@class='author_type']/descendant::span[2]/text())")
+        loader.add_xpath('product_description', "normalize-space(//span[@class='details_text']/text())")
+        loader.add_xpath('product_specification', "normalize-space(//div[@class='jobs_details']/span/text())")
+        loader.add_xpath('product_condition_description', "normalize-space(//div[@class='jobs_details'][2]/span[2]/text())")
+        loader.add_xpath('seen', "normalize-space(//div[@class='article_views']/span/text())")
+        loader.add_xpath('app_id', "normalize-space(//div[@class='market-item-id']/span/text())")
+        loader.add_xpath('phone', "normalize-space(//div[@class='numbers-wrap']/a/@href)")
+        print(loader.item)
+        yield loader.load_item()
 
 
