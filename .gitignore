@@ -4,3 +4,4 @@ myhome/__pycache__/*
 myhome/spiders/__pycache__/*
 /data
 *.pyc
+/.vscode
