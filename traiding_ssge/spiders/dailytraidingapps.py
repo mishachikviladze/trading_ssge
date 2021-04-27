@@ -7,7 +7,7 @@ from ..items import TraidingSsgeItem
 class DailytraidingappsSpider(scrapy.Spider):
     name = 'dailytraidingapps'
     allowed_domains = ['www.ss.ge']
-    start_urls = ['https://www.ss.ge/ka/sales/list?Page=1']
+    start_urls = ['https://www.ss.ge/ka/sales/list?Sort.SortExpression=%22OrderDate%22%20DESC']
     page=1
     irrelevantpages=0
     yesterday = datetime.now() - timedelta(1)
@@ -32,7 +32,7 @@ class DailytraidingappsSpider(scrapy.Spider):
 
         self.page = self.page + 1
         self.irrelevantpages+=1
-        next_page_url = f'https://www.ss.ge/ka/sales/list?Page={self.page}'
+        next_page_url = f'https://www.ss.ge/ka/sales/list?Page={self.page}&Sort.SortExpression=%22OrderDate%22%20DESC'
         next_page = scrapy.Request(url=next_page_url)
         if (next_page and self.irrelevantpages<7):  
             # print("---------------------------------------------------------------------------------------------------Semdegi gverdi moiZebna", next_page_url, self.page)
